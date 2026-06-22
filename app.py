@@ -11,7 +11,7 @@ education_order = joblib.load('education_order.pkl')
 st.title("Predikcija pretplate na bankovni depozit")
 st.write("Unesite podatke o klijentu da predvidite da li će se pretplatiti na rok-depozit.")
 
-# --- Unos podataka ---
+
 age = st.number_input("Starost", min_value=17, max_value=100, value=40)
 
 month = st.selectbox("Mesec poslednjeg kontakta", 
@@ -32,7 +32,7 @@ euribor3m = st.number_input("Euribor 3m (kamatna stopa)", min_value=0.0, max_val
 cons_conf_idx = st.number_input("Indeks poverenja potrošača", min_value=-60.0, max_value=0.0, value=-40.0, step=0.1)
 cons_price_idx = st.number_input("Indeks cena potrošača", min_value=90.0, max_value=96.0, value=93.5, step=0.01)
 
-# --- Priprema podataka za model ---
+#Priprema podataka za model 
 if st.button("Predvidi"):
     
     # Skaliranje numerickih vrednosti
@@ -52,7 +52,7 @@ if st.button("Predvidi"):
     scaled_values = scaler.transform(temp_df)
     scaled_df = pd.DataFrame(scaled_values, columns=numeric_cols_to_scale)
     
-    # Pravimo finalni red sa tačno onim kolonama koje model očekuje (top_features)
+    
     input_data = pd.DataFrame(columns=top_features)
     input_data.loc[0] = 0  # default sve na 0
     
@@ -67,7 +67,7 @@ if st.button("Predvidi"):
     input_data['month_oct'] = 1 if month == 'oct' else 0
     input_data['poutcome_failure'] = 1 if poutcome == 'failure' else 0
     
-    # --- Predikcija ---
+    #Predikcija
     prediction = model.predict(input_data)[0]
     probability = model.predict_proba(input_data)[0][1]
     
